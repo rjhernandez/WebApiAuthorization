@@ -11,6 +11,8 @@ namespace AspNetCore3ODataPermissionsSample.Models
         public static IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
+            builder.EnableLowerCamelCase();
+            
             var customers = builder.EntitySet<Customer>("Customers");
             var orders = builder.EntitySet<Order>("Orders");
             var getTopCustomer = builder.Function("GetTopCustomer").ReturnsFromEntitySet<Customer>("Customers");
@@ -55,7 +57,6 @@ namespace AspNetCore3ODataPermissionsSample.Models
                     .HasNavigationProperty(new EdmNavigationPropertyPathExpression("Customers/Order"))
                     .HasReadRestrictions(r => r
                         .HasPermissions(p => p.HasSchemeName("Scheme").HasScopes(s => s.HasScope("Customers.ReadOrder")))));
-
 
             var model = builder.GetEdmModel();
 
